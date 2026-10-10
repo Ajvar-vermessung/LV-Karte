@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "tag": "karte-20261010",
+  "quelle": "20261010.pmtiles",
+  "datum": "20261010",
+  "gebaut": "2026-10-10T20:51:42Z",
+  "maxzoom": 14,
+  "groesse": 2719033072,
+  "sha256": "2d5c55f4a9c4d86a946e9eafaa02dae1618af6e4c2e13773fa24ece36bd37d06",
+  "teile": [
+    {
+      "name": "deutschland.pmtiles.teil00",
+      "groesse": 1992294400,
+      "sha256": "1ca93f529301444f550f87b8ec53bf40441e6bf5d098c8b8fcc6f12f7d2ee081"
+    },
+    {
+      "name": "deutschland.pmtiles.teil01",
+      "groesse": 726738672,
+      "sha256": "5deaf944e715d67fbebaef5c8c1f452d383daa5dad923fb35f9e751e106c04e1"
+    }
+  ]
+}
