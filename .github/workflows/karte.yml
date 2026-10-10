@@ -3,10 +3,11 @@
 #
 # Ablauf:
 #   1. neuesten Tagesstand von build.protomaps.com bestimmen
-#   2. Deutschland (grober Umriss + Rand) bis Zoom 14 ausschneiden
-#      (pmtiles extract holt nur die noetigen Teile, ~2,5 GB statt 140 GB)
+#   2. Deutschland (grober Umriss + Rand) bis Zoom 15 ausschneiden
+#      (pmtiles extract holt nur die noetigen Teile, ~5,5 GB statt 140 GB;
+#      Zoom 15, weil Protomaps Hausnummern erst dort hat)
 #   3. in Teile < 2 GB zerlegen (Grenze je Release-Datei bei GitHub)
-#   4. Release "karte-JJJJMMTT" mit den Teilen anlegen
+#   4. Release "karte-JJJJMMTT-z15" mit den Teilen anlegen
 #   5. stand.json + style.json im Repo aktualisieren - die App liest
 #      stand.json und laedt bei neuem Stand die Teile nach (nur WLAN) und
 #      setzt sie auf dem Geraet wieder zu einer Datei zusammen
@@ -36,8 +37,9 @@ concurrency:
 env:
   PMTILES_VERSION: "1.31.2"
   BASEMAPS_VERSION: "5.7.2"
-  MAXZOOM: "14"
+  MAXZOOM: "15"
   TEILGROESSE: "1900m"
+  GROSS: /mnt/karte
 
 jobs:
   bauen:
@@ -54,9 +56,9 @@ jobs:
           datum=${build%.pmtiles}
           echo "build=$build" >> "$GITHUB_OUTPUT"
           echo "datum=$datum" >> "$GITHUB_OUTPUT"
-          echo "tag=karte-$datum" >> "$GITHUB_OUTPUT"
-          alt=$(jq -r '.quelle // ""' stand.json 2>/dev/null || true)
-          if [ "$alt" = "$build" ] && [ "${{ inputs.erzwingen }}" != "true" ]; then
+          echo "tag=karte-$datum-z$MAXZOOM" >> "$GITHUB_OUTPUT"
+          alt=$(jq -r '(.quelle // "") + "-z" + ((.maxzoom // 0) | tostring)' stand.json 2>/dev/null || true)
+          if [ "$alt" = "$build-z$MAXZOOM" ] && [ "${{ inputs.erzwingen }}" != "true" ]; then
             echo "neu=false" >> "$GITHUB_OUTPUT"
             echo "Stand $build ist schon gebaut."
           else
@@ -69,25 +71,28 @@ jobs:
           curl -sfL "https://github.com/protomaps/go-pmtiles/releases/download/v${PMTILES_VERSION}/go-pmtiles_${PMTILES_VERSION}_Linux_x86_64.tar.gz" | tar xz pmtiles
           pip install --quiet shapely
           npm install --silent --no-save "@protomaps/basemaps@${BASEMAPS_VERSION}"
+          # Datei + Teile brauchen ~11 GB - auf / ist zu wenig frei, /mnt ist gross.
+          sudo mkdir -p "$GROSS" && sudo chown "$USER" "$GROSS"
+          df -h / "$GROSS"
 
       - name: Deutschland ausschneiden
         if: steps.stand.outputs.neu == 'true'
         run: |
           python3 werkzeug/puffer.py werkzeug/deutschland.geojson gebiet.geojson 0.15
-          ./pmtiles extract "https://build.protomaps.com/${{ steps.stand.outputs.build }}" deutschland.pmtiles \
+          ./pmtiles extract "https://build.protomaps.com/${{ steps.stand.outputs.build }}" "$GROSS/deutschland.pmtiles" \
             --region=gebiet.geojson --maxzoom="$MAXZOOM" --download-threads=8
-          ./pmtiles verify deutschland.pmtiles
-          ls -l deutschland.pmtiles
+          ./pmtiles verify "$GROSS/deutschland.pmtiles"
+          ls -l "$GROSS/deutschland.pmtiles"
 
       - name: Zerlegen und stand.json schreiben
         if: steps.stand.outputs.neu == 'true'
         run: |
-          mkdir teile
-          split -b "$TEILGROESSE" -d -a 2 deutschland.pmtiles teile/deutschland.pmtiles.teil
-          groesse=$(stat -c %s deutschland.pmtiles)
-          sha=$(sha256sum deutschland.pmtiles | cut -d' ' -f1)
-          rm deutschland.pmtiles
-          teile=$(for f in teile/*; do
+          mkdir "$GROSS/teile"
+          split -b "$TEILGROESSE" -d -a 2 "$GROSS/deutschland.pmtiles" "$GROSS/teile/deutschland.pmtiles.teil"
+          groesse=$(stat -c %s "$GROSS/deutschland.pmtiles")
+          sha=$(sha256sum "$GROSS/deutschland.pmtiles" | cut -d' ' -f1)
+          rm "$GROSS/deutschland.pmtiles"
+          teile=$(for f in "$GROSS"/teile/*; do
             printf '{"name":"%s","groesse":%s,"sha256":"%s"}\n' "$(basename "$f")" "$(stat -c %s "$f")" "$(sha256sum "$f" | cut -d' ' -f1)"
           done | jq -s .)
           jq -n --arg tag "${{ steps.stand.outputs.tag }}" --arg quelle "${{ steps.stand.outputs.build }}" \
@@ -105,7 +110,7 @@ jobs:
         run: |
           tag="${{ steps.stand.outputs.tag }}"
           gh release delete "$tag" --yes --cleanup-tag 2>/dev/null || true
-          gh release create "$tag" teile/* stand.neu.json \
+          gh release create "$tag" "$GROSS"/teile/* stand.neu.json \
             --title "Offline-Karte Deutschland ${{ steps.stand.outputs.datum }}" \
             --notes "Protomaps-Stand ${{ steps.stand.outputs.build }}, Zoom 0-${MAXZOOM}. Daten © OpenStreetMap-Mitwirkende (ODbL)."
 
