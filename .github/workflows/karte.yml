@@ -1,16 +1,17 @@
-# Baut jede Woche die Offline-Karte Deutschland aus dem neuesten
-# Protomaps-Stand (OpenStreetMap) und stellt sie als Release bereit.
+# Baut jede Woche die Offline-Karte aus dem neuesten Protomaps-Stand
+# (OpenStreetMap) und stellt sie als Release bereit - je Bundesland eine
+# Datei und zusaetzlich ganz Deutschland. Die App laedt nur die Gebiete, die
+# der Nutzer auswaehlt.
 #
 # Ablauf:
 #   1. neuesten Tagesstand von build.protomaps.com bestimmen
-#   2. Deutschland (grober Umriss + Rand) bis Zoom 15 ausschneiden
-#      (pmtiles extract holt nur die noetigen Teile, ~5,5 GB statt 140 GB;
-#      Zoom 15, weil Protomaps Hausnummern erst dort hat)
-#   3. in Teile < 2 GB zerlegen (Grenze je Release-Datei bei GitHub)
-#   4. Release "karte-JJJJMMTT-z15" mit den Teilen anlegen
-#   5. stand.json + style.json im Repo aktualisieren - die App liest
-#      stand.json und laedt bei neuem Stand die Teile nach (nur WLAN) und
-#      setzt sie auf dem Geraet wieder zu einer Datei zusammen
+#   2. Umrisse: werkzeug/gebiete.py macht aus bundeslaender.geojson je Land
+#      einen Umriss mit ~5 km Rand plus Deutschland (alle vereinigt)
+#   3. jedes Gebiet bis Zoom 15 ausschneiden (Hausnummern hat Protomaps erst
+#      dort), in Teile < 2 GB zerlegen (Grenze je Release-Datei bei GitHub)
+#   4. Release "karte-JJJJMMTT-z15-l" mit allen Teilen anlegen
+#   5. stand.json (Version 2: Liste der Gebiete mit Groesse, SHA-256, Teilen)
+#      + style.json im Repo aktualisieren
 #   6. alte Releases loeschen (die letzten zwei bleiben)
 #
 # Der Commit in Schritt 5 haelt den Zeitplan am Leben: GitHub schaltet
@@ -40,11 +41,12 @@ env:
   MAXZOOM: "15"
   TEILGROESSE: "1900m"
   GROSS: /mnt/karte
+  FORMAT: "l"   # Kennung im Tag: l = je Land (stand.json Version 2)
 
 jobs:
   bauen:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
 
@@ -54,13 +56,14 @@ jobs:
           build=$(curl -sf https://build-metadata.protomaps.dev/builds.json | jq -r 'map(select(.key | endswith(".pmtiles"))) | sort_by(.key) | last | .key')
           [ -n "$build" ] || { echo "Kein Protomaps-Stand gefunden"; exit 1; }
           datum=${build%.pmtiles}
+          tag="karte-$datum-z$MAXZOOM-$FORMAT"
           echo "build=$build" >> "$GITHUB_OUTPUT"
           echo "datum=$datum" >> "$GITHUB_OUTPUT"
-          echo "tag=karte-$datum-z$MAXZOOM" >> "$GITHUB_OUTPUT"
-          alt=$(jq -r '(.quelle // "") + "-z" + ((.maxzoom // 0) | tostring)' stand.json 2>/dev/null || true)
-          if [ "$alt" = "$build-z$MAXZOOM" ] && [ "${{ inputs.erzwingen }}" != "true" ]; then
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          alt=$(jq -r '.tag // ""' stand.json 2>/dev/null || true)
+          if [ "$alt" = "$tag" ] && [ "${{ inputs.erzwingen }}" != "true" ]; then
             echo "neu=false" >> "$GITHUB_OUTPUT"
-            echo "Stand $build ist schon gebaut."
+            echo "Stand $tag ist schon gebaut."
           else
             echo "neu=true" >> "$GITHUB_OUTPUT"
           fi
@@ -71,36 +74,31 @@ jobs:
           curl -sfL "https://github.com/protomaps/go-pmtiles/releases/download/v${PMTILES_VERSION}/go-pmtiles_${PMTILES_VERSION}_Linux_x86_64.tar.gz" | tar xz pmtiles
           pip install --quiet shapely
           npm install --silent --no-save "@protomaps/basemaps@${BASEMAPS_VERSION}"
-          # Datei + Teile brauchen ~11 GB - auf / ist zu wenig frei, /mnt ist gross.
-          sudo mkdir -p "$GROSS" && sudo chown "$USER" "$GROSS"
+          # Alle Teile zusammen ~13 GB - auf / ist zu wenig frei, /mnt ist gross.
+          sudo mkdir -p "$GROSS/teile" "$GROSS/meta" && sudo chown -R "$USER" "$GROSS"
           df -h / "$GROSS"
 
-      - name: Deutschland ausschneiden
+      - name: Gebiete ausschneiden
         if: steps.stand.outputs.neu == 'true'
         run: |
-          python3 werkzeug/puffer.py werkzeug/deutschland.geojson gebiet.geojson 0.15
-          ./pmtiles extract "https://build.protomaps.com/${{ steps.stand.outputs.build }}" "$GROSS/deutschland.pmtiles" \
-            --region=gebiet.geojson --maxzoom="$MAXZOOM" --download-threads=8
-          ./pmtiles verify "$GROSS/deutschland.pmtiles"
-          ls -l "$GROSS/deutschland.pmtiles"
+          python3 werkzeug/gebiete.py werkzeug/bundeslaender.geojson gebiete 0.05
+          chmod +x werkzeug/gebiet_bauen.sh
+          jq -r '.[].id' gebiete/liste.json |
+            xargs -P 4 -I{} werkzeug/gebiet_bauen.sh {} "${{ steps.stand.outputs.build }}"
+          ls -l "$GROSS/teile"
 
-      - name: Zerlegen und stand.json schreiben
+      - name: stand.json und style.json schreiben
         if: steps.stand.outputs.neu == 'true'
         run: |
-          mkdir "$GROSS/teile"
-          split -b "$TEILGROESSE" -d -a 2 "$GROSS/deutschland.pmtiles" "$GROSS/teile/deutschland.pmtiles.teil"
-          groesse=$(stat -c %s "$GROSS/deutschland.pmtiles")
-          sha=$(sha256sum "$GROSS/deutschland.pmtiles" | cut -d' ' -f1)
-          rm "$GROSS/deutschland.pmtiles"
-          teile=$(for f in "$GROSS"/teile/*; do
-            printf '{"name":"%s","groesse":%s,"sha256":"%s"}\n' "$(basename "$f")" "$(stat -c %s "$f")" "$(sha256sum "$f" | cut -d' ' -f1)"
-          done | jq -s .)
+          # Liste (Reihenfolge, Namen) mit den Kennzahlen je Gebiet verbinden.
+          gebiete=$(jq -s '.' "$GROSS"/meta/*.json |
+            jq --slurpfile liste gebiete/liste.json '. as $m | [$liste[0][] | . as $g | ($m[] | select(.id == $g.id)) + {name: $g.name}]')
           jq -n --arg tag "${{ steps.stand.outputs.tag }}" --arg quelle "${{ steps.stand.outputs.build }}" \
                 --arg datum "${{ steps.stand.outputs.datum }}" --arg gebaut "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-                --argjson groesse "$groesse" --arg sha "$sha" --argjson maxzoom "$MAXZOOM" --argjson teile "$teile" \
-                '{version: 1, tag: $tag, quelle: $quelle, datum: $datum, gebaut: $gebaut, maxzoom: $maxzoom, groesse: $groesse, sha256: $sha, teile: $teile}' \
+                --argjson maxzoom "$MAXZOOM" --argjson gebiete "$gebiete" \
+                '{version: 2, tag: $tag, quelle: $quelle, datum: $datum, gebaut: $gebaut, maxzoom: $maxzoom, gebiete: $gebiete}' \
                 > stand.neu.json
-          cat stand.neu.json
+          jq -r '.gebiete[] | "\(.id) \(.name): \(.groesse / 1000000 | floor) MB, \(.teile | length) Teil(e)"' stand.neu.json
           node werkzeug/stil.mjs style.json
 
       - name: Release anlegen
@@ -110,9 +108,11 @@ jobs:
         run: |
           tag="${{ steps.stand.outputs.tag }}"
           gh release delete "$tag" --yes --cleanup-tag 2>/dev/null || true
-          gh release create "$tag" "$GROSS"/teile/* stand.neu.json \
-            --title "Offline-Karte Deutschland ${{ steps.stand.outputs.datum }}" \
+          gh release create "$tag" stand.neu.json \
+            --title "Offline-Karte ${{ steps.stand.outputs.datum }} (je Bundesland + Deutschland)" \
             --notes "Protomaps-Stand ${{ steps.stand.outputs.build }}, Zoom 0-${MAXZOOM}. Daten © OpenStreetMap-Mitwirkende (ODbL)."
+          # In Gruppen hochladen - ein einzelner Aufruf mit ~25 grossen Dateien bricht eher ab.
+          ls "$GROSS"/teile/* | xargs -n 4 gh release upload "$tag" --clobber
 
       - name: stand.json und style.json eintragen
         if: steps.stand.outputs.neu == 'true'
