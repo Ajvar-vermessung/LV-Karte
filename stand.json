@@ -1,22 +1,27 @@
 {
   "version": 1,
-  "tag": "karte-20261010",
+  "tag": "karte-20261010-z15",
   "quelle": "20261010.pmtiles",
   "datum": "20261010",
-  "gebaut": "2026-10-10T20:51:42Z",
-  "maxzoom": 14,
-  "groesse": 2719033072,
-  "sha256": "2d5c55f4a9c4d86a946e9eafaa02dae1618af6e4c2e13773fa24ece36bd37d06",
+  "gebaut": "2026-10-10T21:12:34Z",
+  "maxzoom": 15,
+  "groesse": 5691483300,
+  "sha256": "e2c30d742e4484af74b641f8a35da9d0f4d30e976b817dba7b815b1b9ec777b7",
   "teile": [
     {
       "name": "deutschland.pmtiles.teil00",
       "groesse": 1992294400,
-      "sha256": "1ca93f529301444f550f87b8ec53bf40441e6bf5d098c8b8fcc6f12f7d2ee081"
+      "sha256": "d7728ad5b59a624130e45dd80ba7266125a24a4bee70f94afb45416aa92661d9"
     },
     {
       "name": "deutschland.pmtiles.teil01",
-      "groesse": 726738672,
-      "sha256": "5deaf944e715d67fbebaef5c8c1f452d383daa5dad923fb35f9e751e106c04e1"
+      "groesse": 1992294400,
+      "sha256": "78d30c7f9e21dafe0662751ad51a227b6a2957befd4b5698bb7d5c9e3f56ee71"
+    },
+    {
+      "name": "deutschland.pmtiles.teil02",
+      "groesse": 1706894500,
+      "sha256": "ca02fb39a21228b25c36f875fa0400b17a3e7cfb2c932a44afa036b63cdcae31"
     }
   ]
 }
