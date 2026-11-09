@@ -1,238 +1,238 @@
 {
   "version": 2,
-  "tag": "karte-20261102-z15-l",
-  "quelle": "20261102.pmtiles",
-  "datum": "20261102",
-  "gebaut": "2026-11-02T11:08:15Z",
+  "tag": "karte-20261109-z15-l",
+  "quelle": "20261109.pmtiles",
+  "datum": "20261109",
+  "gebaut": "2026-11-09T11:33:51Z",
   "maxzoom": 15,
   "gebiete": [
     {
       "id": "de",
-      "groesse": 5465583806,
-      "sha256": "57020d28dd61e0008c17c9c41b65d64c35dd02eb7046da8ca6d3df19af4f232d",
+      "groesse": 5468968134,
+      "sha256": "bcf20be3966fd69bfd2ebfaa67e5f4646a79d75ab5fa3621a7c76e53da5fb7ab",
       "teile": [
         {
           "name": "de.pmtiles.teil00",
           "groesse": 1992294400,
-          "sha256": "fcedcf13d3786fc03129caa4604207cb90572bf3ff48cb3dbd56ce1941aee5b0"
+          "sha256": "bc32c10165535d11d602e18ce37a62b3b52eef249b3030db510a365165fa42d9"
         },
         {
           "name": "de.pmtiles.teil01",
           "groesse": 1992294400,
-          "sha256": "5cdff5ec3713023da12b09c06a470e41607a6b92ab1ea614ee8abd931b09b455"
+          "sha256": "e8787942233a38d33437e181cdebf8dd8ad4820b1b9b51db88ea2120bd3593e1"
         },
         {
           "name": "de.pmtiles.teil02",
-          "groesse": 1480995006,
-          "sha256": "234fa2d68eeecba2abadd179a09b28f70917ddb5da3d40c9bd1fca98060ebba8"
+          "groesse": 1484379334,
+          "sha256": "81762132a859f56dfff6f9b45b9a7479bdb29fbc9070619bc25f7b5ae0216549"
         }
       ],
       "name": "Ganz Deutschland"
     },
     {
       "id": "bw",
-      "groesse": 759441470,
-      "sha256": "deb0c672da67b0a0df15896a9c8586ed5778248d5fdf64110dea1071854727f5",
+      "groesse": 760219638,
+      "sha256": "f8aff1e61c0b597085e783f75dbe43deea4e23d277a7fe2fb6459fa9c069df9f",
       "teile": [
         {
           "name": "bw.pmtiles.teil00",
-          "groesse": 759441470,
-          "sha256": "deb0c672da67b0a0df15896a9c8586ed5778248d5fdf64110dea1071854727f5"
+          "groesse": 760219638,
+          "sha256": "f8aff1e61c0b597085e783f75dbe43deea4e23d277a7fe2fb6459fa9c069df9f"
         }
       ],
       "name": "Baden-Württemberg"
     },
     {
       "id": "by",
-      "groesse": 1078566710,
-      "sha256": "ea6aecf1a714d1a3d10bd24d548fe2ba3c7a132ced7210edb385b1f338a095b3",
+      "groesse": 1079079441,
+      "sha256": "b6e886bc84be19dfc2788a9a77347586ec58cb1d8da2a9428a8daf55838c132f",
       "teile": [
         {
           "name": "by.pmtiles.teil00",
-          "groesse": 1078566710,
-          "sha256": "ea6aecf1a714d1a3d10bd24d548fe2ba3c7a132ced7210edb385b1f338a095b3"
+          "groesse": 1079079441,
+          "sha256": "b6e886bc84be19dfc2788a9a77347586ec58cb1d8da2a9428a8daf55838c132f"
         }
       ],
       "name": "Bayern"
     },
     {
       "id": "be",
-      "groesse": 82892524,
-      "sha256": "40bad122aad8e7223af62d1c4086931444fc138c26b8effdca2452eb95fac6be",
+      "groesse": 82946499,
+      "sha256": "3212d8ba5f9372d5017431250108c63bfa2c9e81c0616031a680d59d16b8cdc5",
       "teile": [
         {
           "name": "be.pmtiles.teil00",
-          "groesse": 82892524,
-          "sha256": "40bad122aad8e7223af62d1c4086931444fc138c26b8effdca2452eb95fac6be"
+          "groesse": 82946499,
+          "sha256": "3212d8ba5f9372d5017431250108c63bfa2c9e81c0616031a680d59d16b8cdc5"
         }
       ],
       "name": "Berlin"
     },
     {
       "id": "bb",
-      "groesse": 336157140,
-      "sha256": "1bcc2f0a4235860da558f6178d311c1d14e27d934cfae3288d75f96989449dfd",
+      "groesse": 336376505,
+      "sha256": "238678dee820995b09805415d929bff23d845d01340dbb240f3f541146f79ace",
       "teile": [
         {
           "name": "bb.pmtiles.teil00",
-          "groesse": 336157140,
-          "sha256": "1bcc2f0a4235860da558f6178d311c1d14e27d934cfae3288d75f96989449dfd"
+          "groesse": 336376505,
+          "sha256": "238678dee820995b09805415d929bff23d845d01340dbb240f3f541146f79ace"
         }
       ],
       "name": "Brandenburg"
     },
     {
       "id": "hb",
-      "groesse": 28327081,
-      "sha256": "95714e05c0012e55f244b654afb3c25c591259f381b4d59316ab0b8f056a3877",
+      "groesse": 28333150,
+      "sha256": "775eef126c9c189b1565beb0cc1daca86b3ff6ebd0f539c595dac66eb0776fe0",
       "teile": [
         {
           "name": "hb.pmtiles.teil00",
-          "groesse": 28327081,
-          "sha256": "95714e05c0012e55f244b654afb3c25c591259f381b4d59316ab0b8f056a3877"
+          "groesse": 28333150,
+          "sha256": "775eef126c9c189b1565beb0cc1daca86b3ff6ebd0f539c595dac66eb0776fe0"
         }
       ],
       "name": "Bremen"
     },
     {
       "id": "hh",
-      "groesse": 58256727,
-      "sha256": "10613e6ae8a5b38b68cfda3fec5752ef3dd9edd7aa123f6cda1812b88f77b396",
+      "groesse": 58273150,
+      "sha256": "43947c7d98f2299a5d2d66bcd12ae5a5990424599226b41b8dd30593cc7c3172",
       "teile": [
         {
           "name": "hh.pmtiles.teil00",
-          "groesse": 58256727,
-          "sha256": "10613e6ae8a5b38b68cfda3fec5752ef3dd9edd7aa123f6cda1812b88f77b396"
+          "groesse": 58273150,
+          "sha256": "43947c7d98f2299a5d2d66bcd12ae5a5990424599226b41b8dd30593cc7c3172"
         }
       ],
       "name": "Hamburg"
     },
     {
       "id": "he",
-      "groesse": 445654853,
-      "sha256": "202f1867afea658d16ff8aadfee7f605ae1e87fad49bee6a1e6e4f7738c3719d",
+      "groesse": 445780326,
+      "sha256": "78bd07ac3be4fdd38ae798b83ad58fa8ff1957f62f91c89a1cde70670b731cc1",
       "teile": [
         {
           "name": "he.pmtiles.teil00",
-          "groesse": 445654853,
-          "sha256": "202f1867afea658d16ff8aadfee7f605ae1e87fad49bee6a1e6e4f7738c3719d"
+          "groesse": 445780326,
+          "sha256": "78bd07ac3be4fdd38ae798b83ad58fa8ff1957f62f91c89a1cde70670b731cc1"
         }
       ],
       "name": "Hessen"
     },
     {
       "id": "mv",
-      "groesse": 225600875,
-      "sha256": "4c64e65c85630452cdb24bfe0d44499b6cd5645d3470f4aaa4973581b8876e4f",
+      "groesse": 225718695,
+      "sha256": "e58f06fd311f5ebf0d8b1c05b291beacfa51bfadf898c53d55fe2186d14d228a",
       "teile": [
         {
           "name": "mv.pmtiles.teil00",
-          "groesse": 225600875,
-          "sha256": "4c64e65c85630452cdb24bfe0d44499b6cd5645d3470f4aaa4973581b8876e4f"
+          "groesse": 225718695,
+          "sha256": "e58f06fd311f5ebf0d8b1c05b291beacfa51bfadf898c53d55fe2186d14d228a"
         }
       ],
       "name": "Mecklenburg-Vorpommern"
     },
     {
       "id": "ni",
-      "groesse": 738655394,
-      "sha256": "1ab405eb5ccbcb3023d4aa11e847514f13e231cd27da26569308418c264da367",
+      "groesse": 739072048,
+      "sha256": "622fd00bf68f844877f9c61085f2cb47207afab5a4c17c8b305b3fe1ca2d1b3d",
       "teile": [
         {
           "name": "ni.pmtiles.teil00",
-          "groesse": 738655394,
-          "sha256": "1ab405eb5ccbcb3023d4aa11e847514f13e231cd27da26569308418c264da367"
+          "groesse": 739072048,
+          "sha256": "622fd00bf68f844877f9c61085f2cb47207afab5a4c17c8b305b3fe1ca2d1b3d"
         }
       ],
       "name": "Niedersachsen"
     },
     {
       "id": "nw",
-      "groesse": 981859212,
-      "sha256": "b6c1926ca0dca52f26155c9c7d2899613055dbeb126fb0e4c59d70c8c61f75b9",
+      "groesse": 982153542,
+      "sha256": "62b060df5895ac3c4fb220ffd345d0d9a568ef17ddff00109e0bc1519925121a",
       "teile": [
         {
           "name": "nw.pmtiles.teil00",
-          "groesse": 981859212,
-          "sha256": "b6c1926ca0dca52f26155c9c7d2899613055dbeb126fb0e4c59d70c8c61f75b9"
+          "groesse": 982153542,
+          "sha256": "62b060df5895ac3c4fb220ffd345d0d9a568ef17ddff00109e0bc1519925121a"
         }
       ],
       "name": "Nordrhein-Westfalen"
     },
     {
       "id": "rp",
-      "groesse": 410191929,
-      "sha256": "c822048b3503f83bed97d86c44430453cfd03891c8461160ee70a7e0c725be57",
+      "groesse": 410749024,
+      "sha256": "5d8a08d06e129714f4099cbde0eb0287d5f437e651e1aa459c654fe23bc9c1ac",
       "teile": [
         {
           "name": "rp.pmtiles.teil00",
-          "groesse": 410191929,
-          "sha256": "c822048b3503f83bed97d86c44430453cfd03891c8461160ee70a7e0c725be57"
+          "groesse": 410749024,
+          "sha256": "5d8a08d06e129714f4099cbde0eb0287d5f437e651e1aa459c654fe23bc9c1ac"
         }
       ],
       "name": "Rheinland-Pfalz"
     },
     {
       "id": "sl",
-      "groesse": 78618087,
-      "sha256": "8fb8668e3e89d1eecc325fba67116590a7956badef090cccfbdd432ff9ec049a",
+      "groesse": 78673272,
+      "sha256": "57c92c721209ec4507ac4f9cc81924c6ae0b662695734705f0580cf7dd860c74",
       "teile": [
         {
           "name": "sl.pmtiles.teil00",
-          "groesse": 78618087,
-          "sha256": "8fb8668e3e89d1eecc325fba67116590a7956badef090cccfbdd432ff9ec049a"
+          "groesse": 78673272,
+          "sha256": "57c92c721209ec4507ac4f9cc81924c6ae0b662695734705f0580cf7dd860c74"
         }
       ],
       "name": "Saarland"
     },
     {
       "id": "sn",
-      "groesse": 338848821,
-      "sha256": "8ba964776230d8896161b059d7a1f05eeec7d0e9b19fad065266ac0adfa3837f",
+      "groesse": 339145289,
+      "sha256": "e317f4b9532ffdf81d64af777a079e7bbaddf6ae658236152192b454df22bc16",
       "teile": [
         {
           "name": "sn.pmtiles.teil00",
-          "groesse": 338848821,
-          "sha256": "8ba964776230d8896161b059d7a1f05eeec7d0e9b19fad065266ac0adfa3837f"
+          "groesse": 339145289,
+          "sha256": "e317f4b9532ffdf81d64af777a079e7bbaddf6ae658236152192b454df22bc16"
         }
       ],
       "name": "Sachsen"
     },
     {
       "id": "st",
-      "groesse": 257014873,
-      "sha256": "d3851eb112115f4fe349e2f877b155cae33084c9415c237edf636f03a8e7f068",
+      "groesse": 257235419,
+      "sha256": "5bde9af3f640eff4402ea9d13aadd35b389583ecf1ec04ca904a9010017288e0",
       "teile": [
         {
           "name": "st.pmtiles.teil00",
-          "groesse": 257014873,
-          "sha256": "d3851eb112115f4fe349e2f877b155cae33084c9415c237edf636f03a8e7f068"
+          "groesse": 257235419,
+          "sha256": "5bde9af3f640eff4402ea9d13aadd35b389583ecf1ec04ca904a9010017288e0"
         }
       ],
       "name": "Sachsen-Anhalt"
     },
     {
       "id": "sh",
-      "groesse": 238255629,
-      "sha256": "49ee27e37a301f5eb6bea3ff93ad9d3344c7c88e5a7e21b5f4189eb7d028c1fe",
+      "groesse": 238320651,
+      "sha256": "114a84b5da791f3c4bbfdaa3cdec565c7d75e504ad8d5376168aa4f9992ab9dc",
       "teile": [
         {
           "name": "sh.pmtiles.teil00",
-          "groesse": 238255629,
-          "sha256": "49ee27e37a301f5eb6bea3ff93ad9d3344c7c88e5a7e21b5f4189eb7d028c1fe"
+          "groesse": 238320651,
+          "sha256": "114a84b5da791f3c4bbfdaa3cdec565c7d75e504ad8d5376168aa4f9992ab9dc"
         }
       ],
       "name": "Schleswig-Holstein"
     },
     {
       "id": "th",
-      "groesse": 259269037,
-      "sha256": "dd7c74fa2f21d7d5dea8f62cae804810018fce7c98e6c213436922a411ccf4ec",
+      "groesse": 259363861,
+      "sha256": "ad04fac1a8b63df3977a8e46fb2fdd4464f45abf5455fe4de5102fa3c185ee57",
       "teile": [
         {
           "name": "th.pmtiles.teil00",
-          "groesse": 259269037,
-          "sha256": "dd7c74fa2f21d7d5dea8f62cae804810018fce7c98e6c213436922a411ccf4ec"
+          "groesse": 259363861,
+          "sha256": "ad04fac1a8b63df3977a8e46fb2fdd4464f45abf5455fe4de5102fa3c185ee57"
         }
       ],
       "name": "Thüringen"
